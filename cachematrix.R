@@ -7,7 +7,7 @@
 
 makeCacheMatrix <- function(x = matrix()) 
 {
-  return(-1)
+  return(0)
 }
 
 
