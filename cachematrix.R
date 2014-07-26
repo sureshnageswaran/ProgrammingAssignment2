@@ -7,6 +7,10 @@
 
 makeCacheMatrix <- function(x = matrix()) 
 {
+  t <- c(1:10)
+  t <- as.dataframe(t)
+  colnames(t) <- c("T")
+  
   return(0)
 }
 
