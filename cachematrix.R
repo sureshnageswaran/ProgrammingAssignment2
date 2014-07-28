@@ -41,6 +41,11 @@ makeCacheMatrix <- function(x = matrix())
   # Set the matrix
   set <- function(matrix)
   {
+    # Unlike a C++ constructor, this function is not invoked 
+    # during object instantiation. 
+    # If it is invoked explicitly, then we need to recalculate
+    # the matrix inverse and store it.
+    
     # Do the standard checks to ensure the matrix is usable
     x <<- matrix
     iDet <- det(x)
@@ -48,7 +53,8 @@ makeCacheMatrix <- function(x = matrix())
     {
       stop("Unusable matrix")
     }
-    iInv <<- NULL	
+    # solve for the inverse and store it
+    iInv <<- solve(x)
   }
   # Get the matrix - return the matrix
   get <- function()
