@@ -18,23 +18,30 @@
 
 makeCacheMatrix <- function(x = matrix())
 {
+  # Test if the input is a valid matrix
   if(!is.matrix(x)) 
   {
     stop("Input must be a matrix object only")
   }
+  # Test if the input is a square matrix
   if (nrow(x) != ncol(x))
   {
     stop("Matrix inverse cannot be calculated for non-square matrices")
   }
+  
+  # Test if the determinant is zero
   iDet <- det(x)	
   if( iDet == 0)
   {
     stop("Matrix determinant is zero. This is a non-invertible matrix")
   }
+  # Initialize the variable (private)
   iInv <- NULL
   
+  # Set the matrix
   set <- function(matrix)
   {
+    # Do the standard checks to ensure the matrix is usable
     x <<- matrix
     iDet <- det(x)
     if( iDet == 0 || nrow(x) != ncol(x) || !is.matrix(x))
@@ -43,19 +50,22 @@ makeCacheMatrix <- function(x = matrix())
     }
     iInv <<- NULL	
   }
+  # Get the matrix - return the matrix
   get <- function()
   {
     return(x)
   }
+  # Store the inverse into the private variable
   setInverse <- function(Inverse)
   {
     iInv <<- Inverse
   }
+  #Retrieve the inverse from the private variable
   getInverse <- function()
   {
     return(iInv)
   }
-  
+  # declare the list of invokable functions
   list( set = set, get = get, setInverse = setInverse, getInverse = getInverse)
   
 }
@@ -70,14 +80,19 @@ makeCacheMatrix <- function(x = matrix())
 
 cacheSolve <- function(objX, ...)
 {
+  # Invoke the getInverse method on the object
   Inv <- objX$getInverse()
+  # If a valid answer came back, you have just retrieved a cached value 
   if(!is.null(Inv))
   {
     message("Printing cached matrix inverse: ")
     return(Inv)
   }
+  # Get the object - stored value
   x <- objX$get()
+  # Calculate the inverse
   Inv <- solve(x)
+  # Store the inverse into the obkect instance
   objX$setInverse(Inv)
   print(Inv)
 }
